@@ -5,7 +5,7 @@ defmodule PhoAuth.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/api", PhoAuth do
+  scope "/", PhoAuth do
     pipe_through :api
   end
 end
