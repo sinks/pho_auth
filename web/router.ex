@@ -7,5 +7,8 @@ defmodule PhoAuth.Router do
 
   scope "/", PhoAuth do
     pipe_through :api
+    # resources "/users", UserController, except: [:new, :edit, :index]
+    post "/register", UserController, :create
+    post "/login", UserController, :login
   end
 end
