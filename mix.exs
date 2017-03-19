@@ -19,7 +19,8 @@ defmodule PhoAuth.Mixfile do
   def application do
     [mod: {PhoAuth, []},
      applications: [:phoenix, :phoenix_pubsub, :cowboy, :logger, :gettext,
-                    :phoenix_ecto, :postgrex]]
+                    :phoenix_ecto, :postgrex],
+     extra_applications: [:crypto]]
   end
 
   # Specifies which paths to compile per environment.

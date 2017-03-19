@@ -12,8 +12,8 @@ config :logger, level: :warn
 # Configure your database
 config :pho_auth, PhoAuth.Repo,
   adapter: Ecto.Adapters.Postgres,
-  username: "postgres",
-  password: "postgres",
+  username: "lincoln",
+  password: "nothing",
   database: "pho_auth_test",
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
