@@ -10,5 +10,6 @@ defmodule PhoAuth.Router do
     # resources "/users", UserController, except: [:new, :edit, :index]
     post "/register", UserController, :create
     post "/login", UserController, :login
+    post "/authorise", UserController, :authorise
   end
 end
