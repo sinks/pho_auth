@@ -25,19 +25,19 @@ defmodule PhoAuth.UserController do
   when is_binary(username) and is_binary(password)
   do
       user = Repo.get_by(User, username: username)
-      login(conn, user, User.hash_password(password))
+      login_user(conn, user, User.hash_password(password))
   end
 
-  def login(conn, %User{username: username, password: password}, password) do
+  def login_user(conn, %User{username: username, password: password}, password) do
     Logger.info "auth user #{username}"
-    {:ok , jwt} = Jwt.encode(:HS256, %{username: username}, "secret")
+    {:ok , jwt} = Jwt.encode("HS256", %{username: username}, "secret")
 
     conn
     |> put_status(:ok)
     |> json(%{token: jwt})
   end
 
-  def login(conn, nil, _password) do
+  def login_user(conn, nil, _password) do
     Logger.info "auth failed"
     conn
     |> put_status(:bad_request)
@@ -51,10 +51,10 @@ defmodule PhoAuth.UserController do
 
   def authorise_token(conn, ["token " <> token | _]) do
     case Jwt.valid(token, "secret") do
-      {:ok} ->
+      {:ok, %{header: header, body: body}} ->
         conn
         |> put_status(:ok)
-        |> json(%{})
+        |> json(%{header: header, body: body})
       {:error} ->
         conn
         |> put_status(:bad_request)

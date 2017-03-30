@@ -13,17 +13,17 @@ defmodule PhoAuth.Jwt do
     [header64, body64, _] = String.split(token, ".", parts: 3)
     checked =
       with {:ok, header_bin} <- base_decode(header64),
-         {:ok, body_bin} <- base_decode(body64),
-         {:ok, header} <- Poison.decode(header_bin),
-         {:ok, body} <- Poison.decode(body_bin),
-         {:ok, cmp_token} <- encode(Map.get(header, "alg"), body, secret),
-         true <- token == cmp_token,
-      do: {:ok}
+      {:ok, body_bin} <- base_decode(body64),
+      {:ok, header} <- Poison.decode(header_bin),
+      {:ok, body} <- Poison.decode(body_bin),
+      {:ok, cmp_token} <- encode(Map.get(header, "alg"), body, secret),
+      true <- token == cmp_token,
+      do: {:ok, %{header: header, body: body}}
 
-      case checked do
-        {:ok} -> {:ok}
-        _ -> {:error}
-      end
+    case checked do
+      {:ok, _} -> checked
+      _ -> {:error}
+    end
   end
 
   defp base_encode(data), do: Base.url_encode64(data, [padding: false])
